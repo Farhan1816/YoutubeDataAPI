@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,15 +48,19 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         holder.title.setText(searchResult.getSnippet().getTitle());
         holder.description.setText(searchResult.getSnippet().getDescription());
         holder.thumbnail.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View v) {
                 String videoId = searchResult.getId().getVideoId();
                 Intent intent = new Intent(v.getContext(), youtubePlayer.class);
                 intent.putExtra("videoId", videoId);
+                intent.putExtra("Title", searchResult.getSnippet().getTitle());
+                intent.putExtra("Artist", searchResult.getSnippet().getChannelTitle());
                 v.getContext().startActivity(intent);
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

@@ -1,9 +1,12 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private List<SearchResult>searchResults;
     private SearchListAdapter searchResultsAdapter;
     private final String API_KEY = "AIzaSyANCeqsxRm4V1UVDHOl1jQ8VXgJnnsthe4";
+    NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
         videoList = findViewById(R.id.videoList);
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         videoList = findViewById(R.id.videoList);
         videoList.setLayoutManager(new LinearLayoutManager(this));
         videoList.setAdapter(searchResultsAdapter);
-
+        createChannel();
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void createChannel() {
+        Log.d("debug", "creatingChannel");
+        NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNELID,
+                "Farhan", NotificationManager.IMPORTANCE_DEFAULT);
+
+        notificationManager = getSystemService(NotificationManager.class);
+        if (notificationManager != null){
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void searchYoutubeVideos(final String query) {
         new Thread(new Runnable() {
             @Override
