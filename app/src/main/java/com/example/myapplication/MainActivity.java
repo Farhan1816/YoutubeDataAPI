@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private YouTube youtube;
     private List<SearchResult>searchResults;
     private SearchListAdapter searchResultsAdapter;
-    private final String API_KEY = "AIzaSyANCeqsxRm4V1UVDHOl1jQ8VXgJnnsthe4";
+    private final String API_KEY = "AIzaSyAw1JTHRHzvysTJaFuobEzOMckuIrm4QAc";
     NotificationManager notificationManager;
 
     @Override
@@ -82,7 +83,12 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        notificationManager.cancelAll();
+    }
     private void searchYoutubeVideos(final String query) {
         new Thread(new Runnable() {
             @Override

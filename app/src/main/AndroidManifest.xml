@@ -24,6 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".youtubePlayer" />
+        <receiver android:name=".NotificationActionService"/>
+        <service android:name=".OnClearFromRecentService"/>
     </application>
 
 </manifest>
